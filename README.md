@@ -2,7 +2,7 @@
 
 A complete Infrastructure as Code (IaC) implementation of a highly available, scalable 3-tier web application architecture on AWS using Terraform modules.
 
-📚 **[View Full Terraform Documentation](DOCS.md)** - Detailed module documentation with all inputs, outputs, and resources.
+---
 
 ## 📋 Table of Contents
 
@@ -136,6 +136,7 @@ This project implements a production-ready 3-tier architecture consisting of:
         └── outputs.tf
 ```
 
+---
 
 ## 📋 Prerequisites
 
@@ -164,6 +165,8 @@ Before you begin, ensure you have the following:
    tar -xzf terraform-docs.tar.gz
    sudo mv terraform-docs /usr/local/bin/
    ```
+
+---
 
 ## 📚 Documentation
 
@@ -352,6 +355,8 @@ Access the application at: `http://<alb-dns-name>`
 - `db_instance_address`: RDS hostname
 - `db_instance_port`: Database port
 
+---
+
 ## ⚙️ Configuration
 
 ### Variable Files
@@ -407,6 +412,8 @@ terraform apply -var-file="environments/staging.tfvars"
 terraform apply -var-file="environments/prod.tfvars"
 ```
 
+---
+
 ## 🚀 Deployment
 
 ### Standard Deployment
@@ -439,6 +446,8 @@ terraform apply -auto-approve
 ```bash
 terraform apply -var="aws_region=us-west-2"
 ```
+
+---
 
 ## 🧪 Testing
 
@@ -509,67 +518,8 @@ terraform state list | grep aws_security_group
 terraform state show module.security.aws_security_group.app
 ```
 
-## 📸 Screenshots
-
-### Required Screenshots for Documentation:
-
-1. **VPC and Subnets**
-   - Navigate to: VPC Dashboard → Your VPCs
-   - Capture: VPC details showing subnets across AZs
-
-2. **Application Load Balancer**
-   - Navigate to: EC2 Dashboard → Load Balancers
-   - Capture: ALB with status, DNS name, and listeners
-
-3. **Auto Scaling Group**
-   - Navigate to: EC2 Dashboard → Auto Scaling Groups
-   - Capture: ASG details showing desired/current capacity and instances
-
-4. **Launch Template**
-   - Navigate to: EC2 Dashboard → Launch Templates
-   - Capture: Template details and version
-
-5. **RDS Instance**
-   - Navigate to: RDS Dashboard → Databases
-   - Capture: Database details showing endpoint and status
-
-6. **Security Groups**
-   - Navigate to: EC2 Dashboard → Security Groups
-   - Capture: List of all security groups created
-
-7. **Terraform Apply Output**
-   - Capture terminal output of successful `terraform apply`
-
-8. **Web Application**
-   - Access ALB DNS name in browser
-   - Capture the welcome page
-
-9. **ICMP Test (Ping)**
-   - From bastion or local machine
-   - Capture successful ping response
-
-## 💰 Cost Estimation
-
-Estimated monthly costs in US-East-1 (as of 2024):
-
-| Resource | Quantity | Estimated Cost |
-|----------|----------|----------------|
-| VPC | 1 | $0 (free) |
-| NAT Gateway | 1 | ~$32.40 |
-| Application Load Balancer | 1 | ~$16.20 |
-| EC2 t2.micro (ASG) | 2 | ~$16.80 |
-| RDS db.t3.micro | 1 | ~$15.33 |
-| EBS Storage | ~40 GB | ~$4.00 |
-| Data Transfer | Variable | ~$10.00 |
-| **Total** | | **~$95-100/month** |
-
-**Cost Optimization Tips:**
-- Use Spot Instances for non-production (up to 90% savings)
-- Stop RDS instances overnight in dev environments
-- Use single NAT Gateway instead of per-AZ
-- Enable RDS storage autoscaling
-- Use Reserved Instances for production (up to 72% savings)
-
+---
+ 
 ## 🧹 Cleanup
 
 ### Destroy All Resources
@@ -666,6 +616,9 @@ aws elbv2 describe-target-health \
 terraform force-unlock <lock-id>
 ```
 
+---
+
+
 ## 📝 Additional Resources
 
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
@@ -684,9 +637,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👤 Author
 
 **[Abraham Ayamigah](https://github.com/Ayamigah16)**
-
-- Project: 3-Tier AWS Architecture
-- Environment: ${var.environment}
-- Managed by: Terraform
-
----
