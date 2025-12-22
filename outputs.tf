@@ -110,3 +110,46 @@ output "db_username" {
   value       = module.database.db_username
   sensitive   = true
 }
+
+# Bastion Outputs
+output "bastion_public_ip" {
+  description = "Bastion host public IP (Elastic IP if enabled)"
+  value       = var.enable_bastion ? module.bastion[0].bastion_eip : null
+}
+
+output "bastion_instance_id" {
+  description = "Bastion host instance ID"
+  value       = var.enable_bastion ? module.bastion[0].bastion_instance_id : null
+}
+
+output "bastion_ssh_command" {
+  description = "SSH command to connect to bastion host"
+  value       = var.enable_bastion ? module.bastion[0].ssh_command : "Bastion not enabled"
+}
+
+# ECR Outputs
+output "ecr_repository_url" {
+  description = "ECR repository URL for noteservice"
+  value       = module.ecr.repository_url
+}
+
+output "ecr_repository_arn" {
+  description = "ECR repository ARN"
+  value       = module.ecr.repository_arn
+}
+
+output "ecr_repository_name" {
+  description = "ECR repository name"
+  value       = module.ecr.repository_name
+}
+
+# IAM Outputs
+output "ec2_role_name" {
+  description = "EC2 IAM role name"
+  value       = module.iam.ec2_role_name
+}
+
+output "ec2_instance_profile_name" {
+  description = "EC2 instance profile name"
+  value       = module.iam.ec2_instance_profile_name
+}

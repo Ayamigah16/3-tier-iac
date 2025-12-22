@@ -177,3 +177,16 @@ variable "db_multi_az" {
   type        = bool
   default     = false
 }
+
+# Bastion Configuration
+variable "bastion_instance_type" {
+  description = "Instance type for bastion host"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "bastion_allowed_cidrs" {
+  description = "CIDR blocks allowed to SSH into bastion"
+  type        = list(string)
+  default     = ["0.0.0.0/0"] # Change to your IP for better security
+}

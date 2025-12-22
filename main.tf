@@ -86,12 +86,53 @@ module "networking" {
 module "security" {
   source = "./modules/security"
 
-  project_name            = var.project_name
-  vpc_id                  = module.networking.vpc_id
-  vpc_cidr                = module.networking.vpc_cidr
-  alb_ingress_cidr_blocks = var.allowed_cidr_blocks
-  db_port                 = local.db_port
-  enable_bastion_access   = var.enable_bastion
+  project_name                = var.project_name
+  vpc_id                      = module.networking.vpc_id
+  vpc_cidr                    = module.networking.vpc_cidr
+  alb_ingress_cidr_blocks     = var.allowed_cidr_blocks
+  db_port                     = local.db_port
+  enable_bastion_access       = var.enable_bastion
+  bastion_ingress_cidr_blocks = var.bastion_allowed_cidrs
+  bastion_cidr_blocks         = []
+
+  tags = local.common_tags
+}
+
+# Bastion Module
+module "bastion" {
+  count  = var.enable_bastion ? 1 : 0
+  source = "./modules/bastion"
+
+  project_name              = var.project_name
+  key_name                  = var.key_name
+  public_subnet_id          = module.networking.public_subnet_ids[0]
+  bastion_security_group_id = module.security.bastion_security_group_id
+  instance_type             = var.bastion_instance_type
+  enable_eip                = true
+
+  tags = local.common_tags
+}
+
+# ECR Module
+module "ecr" {
+  source = "./modules/ecr"
+
+  project_name                  = var.project_name
+  repository_name               = "noteservice"
+  enable_image_scanning         = true
+  enable_lifecycle_policy       = true
+  max_image_count               = 10
+  untagged_image_retention_days = 7
+
+  tags = local.common_tags
+}
+
+# IAM Module
+module "iam" {
+  source = "./modules/iam"
+
+  project_name  = var.project_name
+  db_secret_arn = module.database.db_secret_arn
 
   tags = local.common_tags
 }
@@ -112,13 +153,14 @@ module "alb" {
 module "compute" {
   source = "./modules/compute"
 
-  project_name          = var.project_name
-  instance_type         = var.instance_type
-  key_name              = var.key_name
-  app_security_group_id = module.security.app_security_group_id
-  private_subnet_ids    = module.networking.private_app_subnet_ids
-  target_group_arns     = [module.alb.target_group_arn]
-  user_data             = local.user_data
+  project_name              = var.project_name
+  instance_type             = var.instance_type
+  key_name                  = var.key_name
+  app_security_group_id     = module.security.app_security_group_id
+  private_subnet_ids        = module.networking.private_app_subnet_ids
+  target_group_arns         = [module.alb.target_group_arn]
+  user_data                 = local.user_data
+  iam_instance_profile_name = module.iam.ec2_instance_profile_name
 
   min_size         = var.asg_min_size
   max_size         = var.asg_max_size
