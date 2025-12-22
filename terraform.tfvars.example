@@ -1,0 +1,52 @@
+# Example Terraform Variables File
+# Copy this file to terraform.tfvars and customize with your values
+
+# ===================================
+# AWS Configuration
+# ===================================
+aws_region = "us-east-1"
+
+# ===================================
+# Project Configuration
+# ===================================
+project_name = "3tier-iac"
+environment  = "dev"
+owner        = "your_name"
+
+# ===================================
+# Network Configuration
+# ===================================
+vpc_cidr                 = "10.0.0.0/16"
+availability_zones       = ["us-east-1a", "us-east-1b"]
+public_subnet_cidrs      = ["10.0.1.0/24", "10.0.2.0/24"]
+private_app_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+private_db_subnet_cidrs  = ["10.0.21.0/24", "10.0.22.0/24"]
+enable_nat_gateway       = true
+
+# ===================================
+# Security Configuration
+# ===================================
+allowed_cidr_blocks = ["0.0.0.0/0"]  # Change to your IP for better security
+enable_bastion      = false
+
+# ===================================
+# Compute Configuration
+# ===================================
+instance_type        = "t2.micro"
+key_name             = ""  # Add your EC2 key pair name here
+asg_min_size         = 1
+asg_max_size         = 4
+asg_desired_capacity = 2
+
+# ===================================
+# Database Configuration
+# ===================================
+db_engine            = "mysql"
+db_engine_version    = "8.0"
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 20
+db_name              = "appdb"
+db_username          = "admin"
+db_password          = "ChangeMe123!"  # IMPORTANT: Change this password!
+db_port              = 3306
+db_multi_az          = false  # Set to true for production
