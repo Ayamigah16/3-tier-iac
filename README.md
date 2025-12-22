@@ -45,45 +45,8 @@ This project implements a production-ready 3-tier architecture consisting of:
 - Multi-AZ deployment option for high availability
 - Automated backups and maintenance windows
 
-## 📁 Project Structure
 
-```
-3-tier-app/
-├── main.tf                      # Root module - orchestrates all modules
-├── provider.tf                  # AWS provider configuration
-├── variables.tf                 # Root module input variables
-├── outputs.tf                   # Root module outputs
-├── terraform.tfvars.example     # Example variable values
-├── README.md                    # Project documentation
-│
-└── modules/
-    ├── networking/              # VPC, Subnets, Gateways, Route Tables
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── security/                # Security Groups for all tiers
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── alb/                     # Application Load Balancer
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── compute/                 # Auto Scaling Group & Launch Template
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    └── database/                # RDS Instance & DB Subnet Group
-        ├── main.tf
-        ├── variables.tf
-        └── outputs.tf
-```
-
-## 🎨 Architecture Diagram
+### 🎨 Architecture Diagram
 
 ```
                          Internet
@@ -133,56 +96,46 @@ This project implements a production-ready 3-tier architecture consisting of:
              └──────────────────────────┘
 ```
 
-## ✨ Features
+---
 
-### Networking
-- ✅ VPC with custom CIDR block
-- ✅ 6 subnets across 2 availability zones (2 public, 2 private app, 2 private DB)
-- ✅ Internet Gateway for public subnets
-- ✅ NAT Gateway for private subnet internet access
-- ✅ Custom route tables for each tier
-- ✅ DNS support enabled
+## 📁 Project Structure
 
-### Security
-- ✅ Layered security groups for each tier
-- ✅ ALB security group (HTTP/HTTPS from internet)
-- ✅ Application security group (traffic from ALB only)
-- ✅ Database security group (traffic from app tier only)
-- ✅ ICMP enabled for ping testing
-- ✅ Optional bastion host support
+```
+3-tier-app/
+├── main.tf                      # Root module - orchestrates all modules
+├── provider.tf                  # AWS provider configuration
+├── variables.tf                 # Root module input variables
+├── outputs.tf                   # Root module outputs
+├── terraform.tfvars.example     # Example variable values
+├── README.md                    # Project documentation
+│
+└── modules/
+    ├── networking/              # VPC, Subnets, Gateways, Route Tables
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    ├── security/                # Security Groups for all tiers
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    ├── alb/                     # Application Load Balancer
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    ├── compute/                 # Auto Scaling Group & Launch Template
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    └── database/                # RDS Instance & DB Subnet Group
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
+```
 
-### Load Balancing
-- ✅ Application Load Balancer (internet-facing)
-- ✅ HTTP/HTTPS listeners
-- ✅ Health checks for targets
-- ✅ Cross-zone load balancing
-
-### Compute
-- ✅ Launch Template with latest Amazon Linux 2 AMI
-- ✅ Auto Scaling Group with dynamic scaling
-- ✅ CPU-based scaling policies
-- ✅ CloudWatch alarms for monitoring
-- ✅ User data script for web server setup
-- ✅ IMDSv2 enforced
-- ✅ EBS encryption enabled
-
-### Database
-- ✅ RDS MySQL or PostgreSQL
-- ✅ Private subnet deployment
-- ✅ Automated backups
-- ✅ Multi-AZ option for HA
-- ✅ Storage encryption
-- ✅ CloudWatch logs export
-- ✅ Performance Insights (optional)
-
-### Best Practices
-- ✅ No hardcoded values
-- ✅ All resources parameterized
-- ✅ Consistent tagging strategy
-- ✅ Modular and reusable code
-- ✅ Latest AMI from SSM Parameter Store
-- ✅ Deletion protection options
-- ✅ Sensitive data handling
 
 ## 📋 Prerequisites
 
@@ -730,119 +683,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👤 Author
 
-**${var.owner}**
+**[Abraham Ayamigah](https://github.com/Ayamigah16)**
 
 - Project: 3-Tier AWS Architecture
 - Environment: ${var.environment}
 - Managed by: Terraform
 
 ---
-
-**⚠️ Important Security Notes:**
-
-1. Change default database password immediately
-2. Use AWS Secrets Manager for sensitive data
-3. Implement least privilege IAM policies
-4. Enable AWS CloudTrail for auditing
-5. Use private S3 bucket for Terraform state
-6. Rotate credentials regularly
-7. Enable AWS Config for compliance monitoring
-
-**🎯 Next Steps:**
-
-1. Set up CI/CD pipeline
-2. Implement monitoring with CloudWatch
-3. Configure CloudWatch Alarms
-4. Set up AWS Backup for RDS
-5. Implement AWS WAF for ALB
-6. Configure Route53 for custom domain
-7. Add SSL/TLS certificate to ALB
-8. Implement application-level logging
-
----
-
-Made with ❤️ using Terraform
-
-<!-- BEGIN_TF_DOCS -->
-
-
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Providers
-
-No providers.
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_alb"></a> [alb](#module\_alb) | ./modules/alb | n/a |
-| <a name="module_compute"></a> [compute](#module\_compute) | ./modules/compute | n/a |
-| <a name="module_database"></a> [database](#module\_database) | ./modules/database | n/a |
-| <a name="module_networking"></a> [networking](#module\_networking) | ./modules/networking | n/a |
-| <a name="module_security"></a> [security](#module\_security) | ./modules/security | n/a |
-
-## Resources
-
-No resources.
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_allowed_cidr_blocks"></a> [allowed\_cidr\_blocks](#input\_allowed\_cidr\_blocks) | CIDR blocks allowed to access ALB | `list(string)` | <pre>[<br/>  "0.0.0.0/0"<br/>]</pre> | no |
-| <a name="input_asg_desired_capacity"></a> [asg\_desired\_capacity](#input\_asg\_desired\_capacity) | Desired number of instances in ASG | `number` | `2` | no |
-| <a name="input_asg_max_size"></a> [asg\_max\_size](#input\_asg\_max\_size) | Maximum number of instances in ASG | `number` | `4` | no |
-| <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in ASG | `number` | `1` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | List of availability zones | `list(string)` | <pre>[<br/>  "eu-west-1a",<br/>  "eu-west-1b"<br/>]</pre> | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to deploy resources | `string` | `"eu-west-1"` | no |
-| <a name="input_db_allocated_storage"></a> [db\_allocated\_storage](#input\_db\_allocated\_storage) | Allocated storage in GB | `number` | `20` | no |
-| <a name="input_db_engine"></a> [db\_engine](#input\_db\_engine) | Database engine (mysql or postgres) | `string` | `"mysql"` | no |
-| <a name="input_db_engine_version"></a> [db\_engine\_version](#input\_db\_engine\_version) | Database engine version | `string` | `"8.0"` | no |
-| <a name="input_db_instance_class"></a> [db\_instance\_class](#input\_db\_instance\_class) | RDS instance class | `string` | `"db.t3.micro"` | no |
-| <a name="input_db_multi_az"></a> [db\_multi\_az](#input\_db\_multi\_az) | Enable Multi-AZ deployment for RDS | `bool` | `false` | no |
-| <a name="input_db_name"></a> [db\_name](#input\_db\_name) | Name of the default database | `string` | `"appdb"` | no |
-| <a name="input_db_username"></a> [db\_username](#input\_db\_username) | Master username for the database | `string` | `"admin"` | no |
-| <a name="input_enable_bastion"></a> [enable\_bastion](#input\_enable\_bastion) | Enable bastion host for SSH access | `bool` | `false` | no |
-| <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Enable NAT Gateway for private subnets | `bool` | `true` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment name (dev, staging, prod) | `string` | `"dev"` | no |
-| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type for application servers | `string` | `"t3.micro"` | no |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | EC2 key pair name for SSH access | `string` | `""` | no |
-| <a name="input_owner"></a> [owner](#input\_owner) | Project owner/team name | `string` | `"Abraham Ayamigah"` | no |
-| <a name="input_private_app_subnet_cidrs"></a> [private\_app\_subnet\_cidrs](#input\_private\_app\_subnet\_cidrs) | CIDR blocks for private application subnets | `list(string)` | <pre>[<br/>  "10.0.11.0/24",<br/>  "10.0.12.0/24"<br/>]</pre> | no |
-| <a name="input_private_db_subnet_cidrs"></a> [private\_db\_subnet\_cidrs](#input\_private\_db\_subnet\_cidrs) | CIDR blocks for private database subnets | `list(string)` | <pre>[<br/>  "10.0.21.0/24",<br/>  "10.0.22.0/24"<br/>]</pre> | no |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name used for resource naming | `string` | `"3tier-iac"` | no |
-| <a name="input_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#input\_public\_subnet\_cidrs) | CIDR blocks for public subnets | `list(string)` | <pre>[<br/>  "10.0.1.0/24",<br/>  "10.0.2.0/24"<br/>]</pre> | no |
-| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for VPC | `string` | `"10.0.0.0/16"` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_alb_arn"></a> [alb\_arn](#output\_alb\_arn) | ALB ARN |
-| <a name="output_alb_dns_name"></a> [alb\_dns\_name](#output\_alb\_dns\_name) | ALB DNS name - Use this URL to access the application |
-| <a name="output_alb_security_group_id"></a> [alb\_security\_group\_id](#output\_alb\_security\_group\_id) | ALB Security Group ID |
-| <a name="output_ami_id"></a> [ami\_id](#output\_ami\_id) | AMI ID used for EC2 instances |
-| <a name="output_app_security_group_id"></a> [app\_security\_group\_id](#output\_app\_security\_group\_id) | Application Security Group ID |
-| <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | Auto Scaling Group name |
-| <a name="output_database_name"></a> [database\_name](#output\_database\_name) | Database name |
-| <a name="output_db_secret_arn"></a> [db\_secret\_arn](#output\_db\_secret\_arn) | ARN of AWS Secrets Manager secret containing database credentials |
-| <a name="output_db_secret_name"></a> [db\_secret\_name](#output\_db\_secret\_name) | Name of AWS Secrets Manager secret containing database credentials |
-| <a name="output_db_security_group_id"></a> [db\_security\_group\_id](#output\_db\_security\_group\_id) | Database Security Group ID |
-| <a name="output_db_username"></a> [db\_username](#output\_db\_username) | Database master username |
-| <a name="output_launch_template_id"></a> [launch\_template\_id](#output\_launch\_template\_id) | Launch Template ID |
-| <a name="output_private_app_subnet_ids"></a> [private\_app\_subnet\_ids](#output\_private\_app\_subnet\_ids) | Private application subnet IDs |
-| <a name="output_private_db_subnet_ids"></a> [private\_db\_subnet\_ids](#output\_private\_db\_subnet\_ids) | Private database subnet IDs |
-| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | Public subnet IDs |
-| <a name="output_rds_address"></a> [rds\_address](#output\_rds\_address) | RDS address |
-| <a name="output_rds_endpoint"></a> [rds\_endpoint](#output\_rds\_endpoint) | RDS endpoint |
-| <a name="output_rds_port"></a> [rds\_port](#output\_rds\_port) | RDS port |
-| <a name="output_target_group_arn"></a> [target\_group\_arn](#output\_target\_group\_arn) | Target Group ARN |
-| <a name="output_vpc_cidr"></a> [vpc\_cidr](#output\_vpc\_cidr) | VPC CIDR block |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
-<!-- END_TF_DOCS -->
