@@ -2,7 +2,7 @@
 variable "aws_region" {
   description = "AWS region to deploy resources"
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-1"
 }
 
 # Project Configuration
@@ -16,6 +16,11 @@ variable "environment" {
   description = "Environment name (dev, staging, prod)"
   type        = string
   default     = "dev"
+
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "Environment must be dev, staging, or prod."
+  }
 }
 
 variable "owner" {
@@ -34,7 +39,7 @@ variable "vpc_cidr" {
 variable "availability_zones" {
   description = "List of availability zones"
   type        = list(string)
-  default     = ["us-east-1a", "us-east-1b"]
+  default     = ["eu-west-1a", "eu-west-1b"]
 }
 
 variable "public_subnet_cidrs" {
@@ -78,7 +83,7 @@ variable "enable_bastion" {
 variable "instance_type" {
   description = "EC2 instance type for application servers"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "key_name" {
@@ -91,6 +96,11 @@ variable "asg_min_size" {
   description = "Minimum number of instances in ASG"
   type        = number
   default     = 1
+
+  validation {
+    condition     = var.asg_min_size >= 1
+    error_message = "ASG minimum size must be at least 1."
+  }
 }
 
 variable "asg_max_size" {
@@ -110,6 +120,11 @@ variable "db_engine" {
   description = "Database engine (mysql or postgres)"
   type        = string
   default     = "mysql"
+
+  validation {
+    condition     = contains(["mysql", "postgres"], var.db_engine)
+    error_message = "Database engine must be either mysql or postgres."
+  }
 }
 
 variable "db_engine_version" {
@@ -128,31 +143,33 @@ variable "db_allocated_storage" {
   description = "Allocated storage in GB"
   type        = number
   default     = 20
+
+  validation {
+    condition     = var.db_allocated_storage >= 20 && var.db_allocated_storage <= 65536
+    error_message = "Database storage must be between 20 and 65536 GB."
+  }
 }
 
 variable "db_name" {
   description = "Name of the default database"
   type        = string
   default     = "appdb"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9_]*$", var.db_name))
+    error_message = "Database name must start with a letter and contain only alphanumeric characters and underscores."
+  }
 }
 
 variable "db_username" {
   description = "Master username for the database"
   type        = string
   default     = "admin"
-}
 
-variable "db_password" {
-  description = "Master password for the database"
-  type        = string
-  sensitive   = true
-  default     = "ChangeMe123!"
-}
-
-variable "db_port" {
-  description = "Database port (3306 for MySQL, 5432 for PostgreSQL)"
-  type        = number
-  default     = 3306
+  validation {
+    condition     = length(var.db_username) >= 1 && length(var.db_username) <= 16
+    error_message = "Database username must be between 1 and 16 characters."
+  }
 }
 
 variable "db_multi_az" {

@@ -67,17 +67,13 @@ variable "database_name" {
   default     = "appdb"
 }
 
-variable "master_username" {
-  description = "Master username for the database"
+variable "db_username" {
+  description = "Database master username"
   type        = string
   default     = "admin"
 }
 
-variable "master_password" {
-  description = "Master password for the database"
-  type        = string
-  sensitive   = true
-}
+
 
 variable "database_port" {
   description = "Database port"

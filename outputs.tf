@@ -68,8 +68,9 @@ output "launch_template_id" {
 }
 
 output "ami_id" {
-  description = "AMI ID used for instances"
+  description = "AMI ID used for EC2 instances"
   value       = module.compute.ami_id
+  sensitive   = true
 }
 
 # Database Outputs
@@ -91,5 +92,21 @@ output "rds_port" {
 output "database_name" {
   description = "Database name"
   value       = module.database.db_instance_name
+  sensitive   = true
+}
+
+output "db_secret_arn" {
+  description = "ARN of AWS Secrets Manager secret containing database credentials"
+  value       = module.database.db_secret_arn
+}
+
+output "db_secret_name" {
+  description = "Name of AWS Secrets Manager secret containing database credentials"
+  value       = module.database.db_secret_name
+}
+
+output "db_username" {
+  description = "Database master username"
+  value       = module.database.db_username
   sensitive   = true
 }

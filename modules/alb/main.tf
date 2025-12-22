@@ -7,7 +7,7 @@ resource "aws_lb" "main" {
   subnets            = var.public_subnet_ids
 
   enable_deletion_protection = var.enable_deletion_protection
-  enable_http2              = var.enable_http2
+  enable_http2               = var.enable_http2
 
   tags = merge(
     var.tags,

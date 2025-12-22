@@ -71,10 +71,10 @@ resource "aws_launch_template" "main" {
 
 # Auto Scaling Group
 resource "aws_autoscaling_group" "main" {
-  name                = "${var.project_name}-asg"
-  vpc_zone_identifier = var.private_subnet_ids
-  target_group_arns   = var.target_group_arns
-  health_check_type   = var.health_check_type
+  name                      = "${var.project_name}-asg"
+  vpc_zone_identifier       = var.private_subnet_ids
+  target_group_arns         = var.target_group_arns
+  health_check_type         = var.health_check_type
   health_check_grace_period = var.health_check_grace_period
 
   min_size         = var.min_size

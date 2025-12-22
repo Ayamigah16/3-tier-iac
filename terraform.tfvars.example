@@ -41,12 +41,12 @@ asg_desired_capacity = 2
 # ===================================
 # Database Configuration
 # ===================================
-db_engine            = "mysql"
-db_engine_version    = "8.0"
+# Note: Database password is automatically generated and stored in AWS Secrets Manager
+# Note: Database port is automatically determined by the engine (3306 for MySQL, 5432 for PostgreSQL)
+db_engine            = "mysql"        # Options: "mysql" or "postgres"
+db_engine_version    = "8.0"         # 8.0 for MySQL, 14 or 15 for PostgreSQL
 db_instance_class    = "db.t3.micro"
-db_allocated_storage = 20
-db_name              = "appdb"
-db_username          = "admin"
-db_password          = "ChangeMe123!"  # IMPORTANT: Change this password!
-db_port              = 3306
-db_multi_az          = false  # Set to true for production
+db_allocated_storage = 20            # GB (20-65536)
+db_name              = "appdb"       # Must start with a letter, alphanumeric and underscores only
+db_username          = "admin"       # 1-16 characters
+db_multi_az          = false         # Set to true for production high availability
