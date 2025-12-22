@@ -16,5 +16,5 @@ terraform.rc
 *.key
 .DS_Store
 *.backup
-*.md
-*sh
+DOCUMENTATION-SUMMARY.md
+ TERRAFORM-DOCS-GUIDE.md

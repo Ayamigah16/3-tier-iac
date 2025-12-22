@@ -40,8 +40,8 @@ generate_docs() {
     
     if [ -d "$module_path" ]; then
         cd "$module_path"
-        terraform-docs markdown table --output-file README.md --output-mode inject .
-        echo -e "${GREEN}  ✓ ${module_name}/README.md generated${NC}"
+        terraform-docs markdown table --output-file DOCS.md --output-mode inject .
+        echo -e "${GREEN}  ✓ ${module_name}/DOCS.md generated${NC}"
         cd - > /dev/null
     else
         echo -e "${RED}  ✗ Directory not found: ${module_path}${NC}"
@@ -50,8 +50,8 @@ generate_docs() {
 
 # Generate root module documentation
 echo -e "${YELLOW}Generating root module documentation...${NC}"
-terraform-docs markdown table --output-file README.md --output-mode inject .
-echo -e "${GREEN}  ✓ README.md generated${NC}"
+terraform-docs markdown table --output-file DOCS.md --output-mode inject .
+echo -e "${GREEN}  ✓ DOCS.md generated${NC}"
 echo ""
 
 # Generate module documentation
@@ -67,12 +67,12 @@ echo -e "${GREEN}  Documentation Generation Complete!${NC}"
 echo -e "${GREEN}═══════════════════════════════════════════════════════${NC}"
 echo ""
 echo "Generated files:"
-echo "  • README.md (root module)"
-echo "  • modules/networking/README.md"
-echo "  • modules/security/README.md"
-echo "  • modules/alb/README.md"
-echo "  • modules/compute/README.md"
-echo "  • modules/database/README.md"
+echo "  • DOCS.md (root module)"
+echo "  • modules/networking/DOCS.md"
+echo "  • modules/security/DOCS.md"
+echo "  • modules/alb/DOCS.md"
+echo "  • modules/compute/DOCS.md"
+echo "  • modules/database/DOCS.md"
 echo ""
 echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. Review the generated documentation"
