@@ -58,11 +58,11 @@ resource "aws_security_group" "app" {
   description = "Security group for Application servers"
   vpc_id      = var.vpc_id
 
-  # HTTP from ALB
+  # HTTP from ALB (port 3000 for NoteService)
   ingress {
-    description     = "HTTP from ALB"
-    from_port       = 80
-    to_port         = 80
+    description     = "HTTP from ALB to NoteService"
+    from_port       = 3000
+    to_port         = 3000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
   }

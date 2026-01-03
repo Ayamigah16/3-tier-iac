@@ -43,7 +43,7 @@ output "db_security_group_id" {
 # ALB Outputs
 output "alb_dns_name" {
   description = "ALB DNS name - Use this URL to access the application"
-  value       = "http://${module.alb.alb_dns_name}"
+  value       = module.alb.alb_dns_name
 }
 
 output "alb_arn" {

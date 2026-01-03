@@ -19,7 +19,7 @@ resource "aws_lb" "main" {
 
 # Target Group
 resource "aws_lb_target_group" "main" {
-  name     = "${var.project_name}-tg"
+  name     = "${var.project_name}-tg-${var.target_group_port}"
   port     = var.target_group_port
   protocol = var.target_group_protocol
   vpc_id   = var.vpc_id

@@ -11,59 +11,27 @@ locals {
   # User data script for web servers
   user_data = <<-EOF
               #!/bin/bash
+              set -euo pipefail
+              
+              # Update system
               yum update -y
-              yum install -y httpd
-              systemctl start httpd
-              systemctl enable httpd
               
-              # Create a simple web page
-              cat > /var/www/html/index.html <<'HTML'
-              <!DOCTYPE html>
-              <html>
-              <head>
-                  <title>3-Tier Application</title>
-                  <style>
-                      body {
-                          font-family: Arial, sans-serif;
-                          text-align: center;
-                          padding: 50px;
-                          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                          color: white;
-                      }
-                      .container {
-                          background: rgba(255, 255, 255, 0.1);
-                          padding: 40px;
-                          border-radius: 10px;
-                          backdrop-filter: blur(10px);
-                      }
-                      h1 { font-size: 3em; margin-bottom: 20px; }
-                      p { font-size: 1.2em; }
-                      .info { margin-top: 30px; font-size: 0.9em; }
-                  </style>
-              </head>
-              <body>
-                  <div class="container">
-                      <h1>🚀 3-Tier Architecture</h1>
-                      <p>Welcome to the Application Layer!</p>
-                      <div class="info">
-                          <p><strong>Instance ID:</strong> <span id="instance-id">Loading...</span></p>
-                          <p><strong>Availability Zone:</strong> <span id="az">Loading...</span></p>
-                      </div>
-                  </div>
-                  <script>
-                      fetch('http://169.254.169.254/latest/meta-data/instance-id')
-                          .then(r => r.text())
-                          .then(id => document.getElementById('instance-id').textContent = id);
-                      fetch('http://169.254.169.254/latest/meta-data/placement/availability-zone')
-                          .then(r => r.text())
-                          .then(az => document.getElementById('az').textContent = az);
-                  </script>
-              </body>
-              </html>
-              HTML
+              # Install Docker
+              yum install -y docker
+              systemctl start docker
+              systemctl enable docker
+              usermod -aG docker ec2-user
               
-              # Enable ICMP response
-              echo 0 > /proc/sys/net/ipv4/icmp_echo_ignore_all
+              # Install AWS CLI v2
+              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+              unzip -q /tmp/awscliv2.zip -d /tmp
+              /tmp/aws/install
+              rm -rf /tmp/aws /tmp/awscliv2.zip
+              
+              # Note: Actual container deployment is done via deploy-to-ec2.sh script
+              # This ensures the latest image is pulled after it's built and pushed to ECR
+              
+              echo "Instance ready for container deployment" > /var/log/user-data-complete.log
               EOF
 }
 
@@ -145,6 +113,10 @@ module "alb" {
   vpc_id                = module.networking.vpc_id
   public_subnet_ids     = module.networking.public_subnet_ids
   alb_security_group_id = module.security.alb_security_group_id
+  
+  # NoteService runs on port 3000
+  target_group_port     = 3000
+  health_check_path     = "/api/health"
 
   tags = local.common_tags
 }
