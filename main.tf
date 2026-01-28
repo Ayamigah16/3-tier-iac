@@ -35,6 +35,7 @@ module "security" {
 module "alb" {
   source = "./modules/alb"
 
+  depends_on = [ module.compute ]
 
   vpc_id         = module.networking.vpc_id
   public_subnets = module.networking.public_subnets
